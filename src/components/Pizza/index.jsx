@@ -3,8 +3,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { addItem } from '../../redux/slices/basketSlice';
 
 const Pizza = ({ id, imageUrl, title, price, sizes, types }) => {
+
   const dispatch = useDispatch();
   const { items, totalPrice } = useSelector((state) => state.basket);
+  const basketItem = useSelector((state) => state.basket.items.find((item) => item.id === id));
   const typeNames = ['тонкое', 'традиционное'];
   const [activeSize, setActiveSize] = React.useState(0);
   const [activeType, setActiveType] = React.useState(0);
@@ -15,8 +17,8 @@ const Pizza = ({ id, imageUrl, title, price, sizes, types }) => {
       title,
       price,
       imageUrl,
-      type: activeType,
-      size: activeSize,
+      type: typeNames[activeType],
+      size: sizes[activeSize],
     };
     dispatch(addItem(item));
   };
@@ -63,7 +65,7 @@ const Pizza = ({ id, imageUrl, title, price, sizes, types }) => {
               />
             </svg>
             <span>Добавить</span>
-            <i>{items.length}</i>
+            <i>{basketItem ? basketItem.count : '0'}</i>
           </button>
         </div>
       </div>

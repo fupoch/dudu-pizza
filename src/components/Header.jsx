@@ -13,8 +13,8 @@ const Header = () => {
           <div className="header__logo">
             <img width="38" src={logoSvg} alt="Pizza logo" />
             <div>
-              <h1>React Pizza</h1>
-              <p>самая вкусная пицца во вселенной</p>
+              <h1>Dudu pizza</h1>
+              <p>Оригинальная пиццерия</p>
             </div>
           </div>
         </Link>
@@ -51,7 +51,7 @@ const Header = () => {
                 strokeLinejoin="round"
               />
             </svg>
-            <span>{items.length}</span>
+            <span>{items.reduce((sum, item) => sum + item.count, 0)}</span>
           </Link>
         </div>
       </div>

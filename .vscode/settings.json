@@ -1,0 +1,42 @@
+{
+  // Настройки Prettier
+  "prettier.tabWidth": 2,
+  "prettier.singleQuote": true,
+  "prettier.trailingComma": "all",
+  "prettier.semi": true,
+  "prettier.jsxBracketSameLine": true,
+  "prettier.printWidth": 100,
+  // Настройки ESLint
+  "eslint.packageManager": "yarn",
+  "eslint.format.enable": true,
+  "eslint.alwaysShowStatus": true,
+  "editor.formatOnSave": true,
+  // Тип анимации курсора
+  "editor.cursorBlinking": "phase",
+  // Плавная анимация
+  "editor.cursorSmoothCaretAnimation": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "workbench.iconTheme": "vscode-icons",
+  "liveServer.settings.donotShowInfoMsg": true,
+  "liveServer.settings.donotVerifyTags": true,
+  "git.autofetch": true,
+  "git.enableSmartCommit": true,
+  "git.confirmSync": false,
+  "explorer.confirmDragAndDrop": false,
+  "editor.tabSize": 2,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "workbench.sideBar.location": "right",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "ecsstractor_port.bem_nesting": true,
+  "ecsstractor_port.attributes": "className",
+  "ecsstractor_port.comment_style": "css",
+  "editor.minimap.enabled": false,
+  "google-translate.firstLanguage": "en",
+  "google-translate.secondLanguage": "ru",
+  "workbench.colorTheme": "Monokai",
+  "workbench.editor.enablePreview": false
+}
