@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import logoSvg from '../assets/img/pizza-logo.svg';
 import Search from './Search';
 import { useSelector } from 'react-redux';
+import { selectBasket } from '../redux/slices/basketSlice';
 
 const Header = () => {
-  const { items, totalPrice } = useSelector((state) => state.basket);
+  const { items, totalPrice } = useSelector(selectBasket);
   return (
     <div className="header">
       <div className="container">
