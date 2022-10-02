@@ -10,9 +10,7 @@ export const basketSlice = createSlice({
   initialState,
   reducers: {
     addItem(state, action) {
-      state.totalPrice = state.items.reduce((sum, obj) => {
-        return obj.price * obj.count + sum
-      }, 0)
+     
       const currItem = state.items.find( obj => obj.id === action.payload.id)
       if (currItem) {
         currItem.count++
@@ -22,6 +20,9 @@ export const basketSlice = createSlice({
           count: 1
         });
       }
+      state.totalPrice = state.items.reduce((sum, obj) => {
+        return obj.price * obj.count + sum
+      }, 0)
     },
     minusItem(state, action) {
       const currItem = state.items.find( obj => obj.id === action.payload)
@@ -40,6 +41,9 @@ export const basketSlice = createSlice({
   },
 });
 
+export const selectBasket = (state) => state.basket
+export const selectBasketItemById = (id) => (state) => state.basket.items.find((item) => item.id === id) 
+export const selectBasketItems = (state) => state.basket.items
 // Action creators are generated for each case reducer function
 export const { addItem, removeItem, clearItems, minusItem} = basketSlice.actions;
 

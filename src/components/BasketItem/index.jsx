@@ -1,11 +1,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import NotFound from '../../pages/NotFound';
-import { addItem, minusItem, removeItem } from '../../redux/slices/basketSlice';
+import { addItem, minusItem, removeItem, selectBasket } from '../../redux/slices/basketSlice';
 
 const BasketItem = ({ id, title, price, type, size, count, imageUrl }) => {
   const dispatch = useDispatch()
-  const { totalPrice, items } = useSelector((state) => state.basket)
+  const { totalPrice, items } = useSelector(selectBasket)
 
   const onClickPlus = () => {
     dispatch(addItem({ id }))

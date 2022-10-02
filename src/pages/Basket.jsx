@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import BasketItem from '../components/BasketItem';
 import NotFoundBlock from '../components/NotFoundBlock';
-import { clearItems } from '../redux/slices/basketSlice';
+import { clearItems, selectBasket, selectBasketItems } from '../redux/slices/basketSlice';
 
 const Basket = () => {
   const dispatch = useDispatch();
-  const { items, totalPrice } = useSelector((state) => state.basket);
-  const basketItems = useSelector((state) => state.basket.items);
+  const { items, totalPrice } = useSelector(selectBasket);
+  const basketItems = useSelector(selectBasketItems);
   const clearBasekt = () => {
     if (window.confirm('Очистить корзину?')) {
       dispatch(clearItems())
