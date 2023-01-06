@@ -1,62 +1,67 @@
 import React from 'react';
 import qs from 'qs';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectFilter, setCategoryId, setCurrentPage, setFilters } from '../redux/slices/filterSlice';
-import { fetchPizzas, selectPizzas } from '../redux/slices/pizzasSlice';
+import { fetchPizzas, SearchPizzaParams, selectPizzas } from '../redux/slices/pizzasSlice';
 import Categories from '../components/Categories';
 import Pizza from '../components/Pizza';
 import Skeleton from '../components/Pizza/Skeleton';
 import Sort, { sortList } from '../components/Sort';
 import Pagination from '@mui/material/Pagination';
-import { SearchContext } from '../App';
 import NotFoundBlock from '../components/NotFoundBlock';
+import { useAppDispatch } from '../redux/store';
 
-const Store = () => {
+const Store: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter);
   const { items, status } = useSelector(selectPizzas);
-  const sortProperty = sort.sortProperty;
+  const sortBy = sort.sortProperty;
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
-  const handleChange = (e, number) => {
+  const handleChange = (e: React.ChangeEvent<unknown>, number: number) => {
     dispatch(setCurrentPage(number));
   };
 
-  const onClickCategory = (id) => {
+  const onClickCategory = (id: number) => {
     dispatch(setCategoryId(id));
   };
 
   const getPizzas = async () => {
     const search = searchValue ? `&search=${searchValue}` : '';
-    const order = sortProperty === 'rating' ? 'desc' : 'asc';
+    const order = sortBy === 'rating' ? 'desc' : 'asc';
     const category = categoryId > 0 ? `category=${categoryId}` : '';
-    dispatch(fetchPizzas({
-      search,
-      order,
-      category,
-      sortProperty,
-      currentPage
-    }))
+    dispatch(
+      fetchPizzas({
+        search,
+        order,
+        category,
+        sortBy,
+        currentPage: String(currentPage)
+      }))
 
   };
 
   //если был первый рендер, проверяем URL параметры и сохраняем в redux
-  React.useEffect(() => {
-    if (window.location.search) {
-      const params = qs.parse(window.location.search.substring(1));
-      const sort = sortList.find((obj) => obj.sortProperty === params.sortProperty);
-
-      dispatch(
-        setFilters({
-          ...params,
-          sort,
-        }),
-      );
-      isSearch.current = false;
-    }
-  }, []);
+  // React.useEffect(() => {
+  //   if (window.location.search) {
+  //     const params = (qs.parse(window.location.search.substring(1)) as unknown) as SearchPizzaParams;
+  //     const sortObj = sortList.find((obj) => obj.sortProperty === params.sortBy);
+  //     if (sort) {
+  //       params.sortBy = sort.sortProperty
+  //     }
+  //     dispatch(
+  //       setFilters({
+  //         searchValue: params.search,
+  //         categoryId: Number(params.category),
+  //         currentPage: Number(params.currentPage),
+  //         sort: sortObj || sortList[0],
+  //       }),
+  //     );
+  //     isSearch.current = false;
+  //   }
+  // }, []);
 
   // если был первый рендер, то запрашиваем пиццы
   React.useEffect(() => {
@@ -66,20 +71,20 @@ const Store = () => {
 
     isSearch.current = false;
     window.scrollTo(0, 0);
-  }, [categoryId, sortProperty, searchValue, currentPage]);
+  }, [categoryId, sortBy, searchValue, currentPage]);
 
   // если изменили какие-либо параметры и был первый рендер
-  React.useEffect(() => {
-    if (isMounted.current) {
-      const querytString = qs.stringify({
-        sortProperty,
-        categoryId,
-        currentPage,
-      });
-      navigate(`?${querytString}`);
-    }
-    isMounted.current = true;
-  }, [categoryId, sortProperty, searchValue, currentPage]);
+  // React.useEffect(() => {
+  //   if (isMounted.current) {
+  //     const querytString = qs.stringify({
+  //       sortBy,
+  //       categoryId,
+  //       currentPage,
+  //     });
+  //     navigate(`?${querytString}`);
+  //   }
+  //   isMounted.current = true;
+  // }, [categoryId, sortBy, searchValue, currentPage]);
 
   return (
     <div className="container">
@@ -97,7 +102,7 @@ const Store = () => {
           <div className="content__items">
             {status === 'loading'
               ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
-              : items.map((pizza) => <Pizza key={pizza.id} {...pizza} />)}
+              : items.map((pizza: any) => <Pizza key={pizza.id} {...pizza} />)}
           </div>
         )}
       <Pagination count={2} page={currentPage} size="large" onChange={handleChange} />

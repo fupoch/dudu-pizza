@@ -1,30 +1,40 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectSort, setSortType } from '../redux/slices/filterSlice';
+import { selectSort, setSortType, SortPropertyEnum, SortType } from '../redux/slices/filterSlice';
 
-export const sortList = [
-  { name: 'популярности', sortProperty: 'rating' },
-  { name: 'цене', sortProperty: 'price' },
-  { name: 'алфавиту', sortProperty: 'title' },
+type SortItem = {
+  name: string;
+  sortProperty: SortPropertyEnum
+}
+
+type PopupClick = MouseEvent & {
+  path: Node[]
+}
+
+export const sortList: SortItem[] = [
+  { name: 'популярности', sortProperty: SortPropertyEnum.RATING },
+  { name: 'цене', sortProperty: SortPropertyEnum.PRICE },
+  { name: 'алфавиту', sortProperty: SortPropertyEnum.TITLE },
 ];
 
 const Sort = () => {
   const dispatch = useDispatch();
   const sort = useSelector(selectSort);
-  const sortRef = React.useRef();
+  const sortRef = React.useRef<HTMLDivElement>(null);
 
-  const onClickSort = (obj) => {
+  const onClickSort = (obj: SortItem) => {
     dispatch(setSortType(obj));
   };
   const [isVisibleSort, setIsVisibleSort] = React.useState(false);
-  const onClickSelectedSort = (obj) => {
+  const onClickSelectedSort = (obj: SortItem) => {
     onClickSort(obj);
     setIsVisibleSort(!isVisibleSort);
   };
 
   React.useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (!event.path.includes(sortRef.current)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      const _event = event as PopupClick;
+      if (sortRef.current && !_event.path.includes(sortRef.current)) {
         setIsVisibleSort(false);
       }
     };
