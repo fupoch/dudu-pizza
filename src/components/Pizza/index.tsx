@@ -1,7 +1,10 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { addItem, CartItem, selectBasket, selectBasketItemById } from '../../redux/slices/basketSlice';
+
+import { selectBasket, selectBasketItemById } from '../../redux/basket/selectors';
+import { CartItem } from '../../redux/basket/types';
+import { addItem } from '../../redux/basket/slice';
 
 type PizzaProps = {
   id: string,

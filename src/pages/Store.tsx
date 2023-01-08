@@ -2,8 +2,10 @@ import React from 'react';
 import qs from 'qs';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectFilter, setCategoryId, setCurrentPage, setFilters } from '../redux/slices/filterSlice';
-import { fetchPizzas, SearchPizzaParams, selectPizzas } from '../redux/slices/pizzasSlice';
+import { setCategoryId, setCurrentPage } from '../redux/filter/slice';
+import { selectFilter } from '../redux/filter/selectors';
+import { fetchPizzas } from '../redux/pizza/slice';
+import { selectPizzas } from '../redux/pizza/selectors';
 import Categories from '../components/Categories';
 import Pizza from '../components/Pizza';
 import Skeleton from '../components/Pizza/Skeleton';
@@ -24,9 +26,9 @@ const Store: React.FC = () => {
     dispatch(setCurrentPage(number));
   };
 
-  const onClickCategory = (id: number) => {
+  const onClickCategory = React.useCallback((id: number) => {
     dispatch(setCategoryId(id));
-  };
+  }, [])
 
   const getPizzas = async () => {
     const search = searchValue ? `&search=${searchValue}` : '';
@@ -90,7 +92,7 @@ const Store: React.FC = () => {
     <div className="container">
       <div className="content__top">
         <Categories value={categoryId} onClickCategory={onClickCategory} />
-        <Sort />
+        <Sort value={sort} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       {status === 'error' ? (

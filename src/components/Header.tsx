@@ -4,11 +4,22 @@ import { Link, useLocation } from 'react-router-dom';
 import logoSvg from '../assets/img/pizza-logo.svg';
 import Search from './Search';
 import { useSelector } from 'react-redux';
-import { selectBasket } from '../redux/slices/basketSlice';
+import { selectBasket } from '../redux/basket/selectors';
 
 const Header: React.FC = () => {
   const { items, totalPrice } = useSelector(selectBasket);
   const location = useLocation()
+  const isMounted = React.useRef(false)
+
+  React.useEffect(() => {
+    if (isMounted.current) {
+      const json = JSON.stringify(items)
+      localStorage.setItem('basket', json)
+    }
+    isMounted.current = true
+
+  }, [items])
+
   return (
     <div className="header">
       <div className="container">
@@ -21,7 +32,7 @@ const Header: React.FC = () => {
             </div>
           </div>
         </Link>
-        <Search />
+        {location.pathname !== '/Basket' && <Search />}
         {location.pathname !== '/Basket' && (
           <div className="header__cart">
             <Link className="button button--cart" to="/Basket">

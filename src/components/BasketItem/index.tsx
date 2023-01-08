@@ -1,7 +1,10 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import clsx from 'clsx';
 import NotFound from '../../pages/NotFound';
-import { addItem, CartItem, minusItem, removeItem, selectBasket } from '../../redux/slices/basketSlice';
+import { selectBasket } from '../../redux/basket/selectors';
+import { CartItem } from '../../redux/basket/types';
+import { addItem, minusItem, removeItem } from '../../redux/basket/slice';
 
 type BasketProps = {
   id: string,
@@ -44,7 +47,7 @@ const BasketItem: React.FC<BasketProps> = ({ id, title, price, type, size, count
         <p>{type}, {size} см.</p>
       </div>
       <div className="cart__item-count">
-        <div onClick={onClickMinus} className="button button--outline button--circle cart__item-count-minus">
+        <button disabled={count === 1} onClick={onClickMinus} className={clsx("button button--outline button--circle cart__item-count-minus", { 'cart__item-count-minus-disabled': count === 1 })}>
           <svg
             width="10"
             height="10"
@@ -60,9 +63,9 @@ const BasketItem: React.FC<BasketProps> = ({ id, title, price, type, size, count
               fill="#EB5A1E"
             />
           </svg>
-        </div>
+        </button>
         <b>{count}</b>
-        <div onClick={onClickPlus} className="button button--outline button--circle cart__item-count-plus">
+        <button onClick={onClickPlus} className="button button--outline button--circle cart__item-count-plus">
           <svg
             width="10"
             height="10"
@@ -78,7 +81,7 @@ const BasketItem: React.FC<BasketProps> = ({ id, title, price, type, size, count
               fill="#EB5A1E"
             />
           </svg>
-        </div>
+        </button>
       </div>
       <div className="cart__item-price">
         <b>{price * count} ₽</b>

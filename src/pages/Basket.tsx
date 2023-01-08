@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import BasketItem from '../components/BasketItem';
 import NotFoundBlock from '../components/NotFoundBlock';
-import { clearItems, selectBasket, selectBasketItems } from '../redux/slices/basketSlice';
+import { selectBasket, selectBasketItems } from '../redux/basket/selectors';
+import { clearItems } from '../redux/basket/slice';
 
 const Basket: React.FC = () => {
   const dispatch = useDispatch();
